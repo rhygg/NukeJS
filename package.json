@@ -1,0 +1,27 @@
+{
+  "name": "nukejs",
+  "version": "1.0.0",
+  "description": "A simple Discord Bot Framework that adds very useful features",
+  "main": "./src/index",
+  "dependencies": {
+    "discord.js": "^12.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LostNuke/NukeJS.git"
+  },
+  "keywords": [
+    "Discord",
+    "Framework"
+  ],
+  "author": "LostNuke",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LostNuke/NukeJS/issues"
+  },
+  "homepage": "https://github.com/LostNuke/NukeJS#readme"
+}
