@@ -17,10 +17,11 @@ declare module 'nukejs' {
         aliases?: Array<string>,
         botPerms?: Array<string>,
         userPerms?: Array<string>,
-        name?: string,
+        name: string,
         description?: string,
         extendedHelp?: string,
-        usage?: string
+        usage?: string,
+        category: string
     }
 
     interface EventOptions {

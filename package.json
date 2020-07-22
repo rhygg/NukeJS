@@ -4,6 +4,7 @@
   "description": "A simple Discord Bot Framework that adds very useful features",
   "main": "./src/index",
   "dependencies": {
+    "chalk": "^4.1.0",
     "discord.js": "^12.2.0"
   },
   "devDependencies": {},

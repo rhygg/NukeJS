@@ -5,11 +5,13 @@ class Command {
      * @param {CommandOptions} options 
      */
     constructor(file,options = {}) {
-        this.enabled = options.enabled || true
+        if ((options.enabled != undefined) && (typeof options.enabled === "boolean")) {this.enabled = options.enabled} else{this.enabled = true}
 
         this.runIn = options.runIn || ['text','dm']
 
-        this.cooldown = options.cooldown || 0
+        this.cooldown = Math.abs(options.cooldown) || 0
+        
+        if(this.cooldown > 0) this.onCooldown = []
 
         this.aliases = options.aliases || []
 
