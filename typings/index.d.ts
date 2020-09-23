@@ -4,10 +4,13 @@ declare module 'nukejs' {
     interface NukeClientOptions {
         discordOptions?: ClientOptions,
         commandsFolder: string,
-        prefix: string,
         eventsFolder: string,
+        langsFolder: string,
+        prefix: string,
         readyMessage?: string,
-        errorLog?: string
+        errorLog?: string,
+        owner?: string,
+        dev_ids?: Array<string>
     }
 
     interface CommandOptions {

@@ -2,8 +2,8 @@ const discord = require('discord.js')
 const fs = require('fs')
 const chalk = require('chalk')
 const {
-    cpuUsage
-} = require('process')
+    ENOENT
+} = require('constants')
 const messagePrefix = `${chalk.gray('[')}${chalk.magentaBright('NukeJS Bot Client')}${chalk.gray(']')}`
 
 class Client extends discord.Client {
@@ -18,11 +18,16 @@ class Client extends discord.Client {
         this.prefix = options.prefix || 'n>'
         super.prefix = this.prefix
         this.eventsFolder = options.eventsFolder || './events'
+        this.langsFolder = options.langsFolder || './languages'
         this.readMessage = options.readyMessage || 'I have been started with the name {username}'
         this.errorLog = options.errorLog || undefined
+        this.owner = options.owner || ""
+        this.dev_ids = options.dev_ids || []
+        if (!this.dev_ids.includes(this.owner) && this.owner != "") this.dev_ids.push(this.owner)
 
         this.commands = new discord.Collection();
         this.events = new discord.Collection();
+        this.langs = new discord.Collection()
 
 
         this.on('ready', function () {
@@ -47,52 +52,76 @@ class Client extends discord.Client {
         //++++++++++++++++++++++++++++++++++++++
         //     External Commands
         //++++++++++++++++++++++++++++++++++++++
-        const perms = discord.Permissions
-        for (var file of commandsDir) {
-            try {
-                if (file.endsWith('.js')) {
-                    const command = new(require(`${process.cwd()}/${this.commandsFolder}/${file}`))(file)
-                    if(!command.enabled) continue
+        try {
+            const perms = discord.Permissions
+            for (var file of commandsDir) {
+                try {
+                    if (file.endsWith('.js')) {
+                        const command = new(require(`${process.cwd()}/${this.commandsFolder}/${file}`))(file)
+                        if (!command.enabled) continue
 
-                    //Correct checks
-                    try{perms.resolve(command.botPerms)} catch(err){if(err instanceof RangeError) console.log(messagePrefix+` BotPerms of ${chalk.blueBright(command.name)} invalid! Command ${chalk.blueBright(command.name)} will be skipped!`); continue;}
-                    try{perms.resolve(command.userPerms)} catch(err){if(err instanceof RangeError) console.log(messagePrefix+` UserPerms of ${chalk.blueBright(command.name)} invalid! Command ${chalk.blueBright(command.name)} will be skipped!`); continue;}
+                        //Correct checks
+                        try {
+                            perms.resolve(command.botPerms)
+                        } catch (err) {
+                            if (err instanceof RangeError) console.log(messagePrefix + ` BotPerms of ${chalk.blueBright(command.name)} invalid! Command ${chalk.blueBright(command.name)} will be skipped!`);
+                            continue;
+                        }
+                        try {
+                            perms.resolve(command.userPerms)
+                        } catch (err) {
+                            if (err instanceof RangeError) console.log(messagePrefix + ` UserPerms of ${chalk.blueBright(command.name)} invalid! Command ${chalk.blueBright(command.name)} will be skipped!`);
+                            continue;
+                        }
 
-                    if(!command.category) command.category = ""
-                    this.commands.set(command.name, command)
-                    
-                    console.log(`${messagePrefix} Loaded external command ${chalk.greenBright(command.name)}`)
-                } else {
-                    if (fs.lstatSync(`${process.cwd()}/${this.commandsFolder}/${file}`).isDirectory()) {
-                        var categoryCommands = fs.readdirSync(`${process.cwd()}/${this.commandsFolder}/${file}`).filter(file => file.endsWith('.js'))
-                        for (var rawCategoryCommand of categoryCommands) {
-                            try {
-                                const command = new(require(`${process.cwd()}/${this.commandsFolder}/${file}/${rawCategoryCommand}`))(rawCategoryCommand)
-                                if(!command.enabled) continue
-                                //perm checks
-                                try{perms.resolve(command.botPerms)} catch{console.log(messagePrefix+` BotPerms of ${chalk.blueBright(command.name)} invalid! Command ${chalk.blueBright(command.name)} will be skipped!`); continue;}
-                                try{perms.resolve(command.userPerms)} catch(err){if(err instanceof RangeError) console.log(messagePrefix+` UserPerms of ${chalk.blueBright(command.name)} invalid! Command ${chalk.blueBright(command.name)} will be skipped!`); continue;}
+                        if (!command.category) command.category = ""
+                        this.commands.set(command.name, command)
 
-                                if(!command.category) command.category = file
-                                this.commands.set(command.name, command)
-                                console.log(`${messagePrefix} Loaded external command ${chalk.greenBright(command.name)}`)
-                            } catch (err) {
-                                if (err instanceof TypeError) {
-                                    console.log(`${messagePrefix} ${chalk.redBright(`Malformed external command at ${chalk.blueBright(rawCategoryCommand)}`)}`)
-                                } else {
-                                    console.log(err)
+                        console.log(`${messagePrefix} Loaded external command ${chalk.greenBright(command.name)}`)
+                    } else {
+                        if (fs.lstatSync(`${process.cwd()}/${this.commandsFolder}/${file}`).isDirectory()) {
+                            var categoryCommands = fs.readdirSync(`${process.cwd()}/${this.commandsFolder}/${file}`).filter(file => file.endsWith('.js'))
+                            for (var rawCategoryCommand of categoryCommands) {
+                                try {
+                                    const command = new(require(`${process.cwd()}/${this.commandsFolder}/${file}/${rawCategoryCommand}`))(rawCategoryCommand)
+                                    if (!command.enabled) continue
+                                    //perm checks
+                                    try {
+                                        perms.resolve(command.botPerms)
+                                    } catch {
+                                        console.log(messagePrefix + ` BotPerms of ${chalk.blueBright(command.name)} invalid! Command ${chalk.blueBright(command.name)} will be skipped!`);
+                                        continue;
+                                    }
+                                    try {
+                                        perms.resolve(command.userPerms)
+                                    } catch (err) {
+                                        if (err instanceof RangeError) console.log(messagePrefix + ` UserPerms of ${chalk.blueBright(command.name)} invalid! Command ${chalk.blueBright(command.name)} will be skipped!`);
+                                        continue;
+                                    }
+
+                                    if (!command.category) command.category = file
+                                    this.commands.set(command.name, command)
+                                    console.log(`${messagePrefix} Loaded external command ${chalk.greenBright(command.name)}`)
+                                } catch (err) {
+                                    if (err instanceof TypeError) {
+                                        console.log(`${messagePrefix} ${chalk.redBright(`Malformed external command at ${chalk.blueBright(rawCategoryCommand)}`)}`)
+                                    } else {
+                                        console.log(err)
+                                    }
                                 }
                             }
                         }
                     }
-                }
-            } catch (err) {
-                if (err instanceof TypeError) {
-                    console.log(`${messagePrefix} ${chalk.redBright(`Malformed external command at ${chalk.blueBright(file)}`)}`)
-                } else {
-                    console.log(err)
+                } catch (err) {
+                    if (err instanceof TypeError) {
+                        console.log(`${messagePrefix} ${chalk.redBright(`Malformed external command at ${chalk.blueBright(file)}`)}`)
+                    } else {
+                        console.log(err)
+                    }
                 }
             }
+        } catch {
+            console.log(`${messagePrefix} ${chalk.redBright("No external Commands defined")}`)
         }
 
         //++++++++++++++++++++++++++++++++++++++
@@ -134,27 +163,33 @@ class Client extends discord.Client {
                 console.log(err)
             }
         }
+
         console.log(chalk.gray(`++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++`))
         console.log(chalk.gray(`#                           Events                               #`))
         console.log(chalk.gray(`++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++`))
         //++++++++++++++++++++++++++++++++++++++
         //     External Events
         //++++++++++++++++++++++++++++++++++++++
-        var externalEventsDir = fs.readdirSync(`${process.cwd()}/${this.eventsFolder}`)
-        for (var externalEventFile of externalEventsDir) {
-            try {
-                const externalEvent = new(require(`${process.cwd()}/${this.eventsFolder}/${externalEventFile}`))()
-                this.on(externalEvent.name, externalEvent.run)
-                externalEvent.file = externalEventFile
-                this.events.set(externalEvent.file, externalEvent)
-                console.log(`${messagePrefix} Loaded external events ${chalk.greenBright(externalEventFile)}`)
-            } catch (err) {
-                if (err instanceof TypeError) {
-                    console.log(`${messagePrefix} ${chalk.redBright(`Malformed external Event at ${chalk.blueBright(externalEventFile)}`)}`)
-                } else {
-                    console.log(err)
+        try {
+            var externalEventsDir = fs.readdirSync(`${process.cwd()}/${this.eventsFolder}`)
+            for (var externalEventFile of externalEventsDir) {
+                try {
+                    const externalEvent = new(require(`${process.cwd()}/${this.eventsFolder}/${externalEventFile}`))()
+                    this.on(externalEvent.name, externalEvent.run)
+                    externalEvent.file = externalEventFile
+                    this.events.set(externalEvent.file, externalEvent)
+                    console.log(`${messagePrefix} Loaded external event ${chalk.greenBright(externalEventFile)}`)
+                } catch (err) {
+                    if (err instanceof TypeError) {
+                        console.log(`${messagePrefix} ${chalk.redBright(`Malformed external Event at ${chalk.blueBright(externalEventFile)}`)}`)
+                    } else {
+                        console.log(err)
+                    }
                 }
             }
+
+        } catch {
+            console.log(`${messagePrefix} ${chalk.redBright("No external Events defined")}`)
         }
 
         //++++++++++++++++++++++++++++++++++++++
@@ -171,14 +206,17 @@ class Client extends discord.Client {
                 this.on(internalEvent.name, internalEvent.run)
                 internalEvent.file = internalEventFile
                 this.events.set(internalEvent.file, internalEvent)
-                console.log(`${messagePrefix} Loaded internal events ${chalk.greenBright(internalEventFile)}`)
+                console.log(`${messagePrefix} Loaded internal event ${chalk.greenBright(internalEventFile)}`)
             } catch (err) {
                 console.log(err)
             }
         }
+
+
         console.log(chalk.gray(`++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++`))
 
     }
+
 
 
 }

@@ -35,7 +35,7 @@ module.exports = class extends Event {
                     return
                 }
             }
-            cmd.run(message, args, message.author, message.client)
+            await cmd.run(message, args, message.author, message.client)
             if (cmd.cooldown > 0) {
                 cmd.onCooldown.push(message.author.id)
                 setTimeout(function () {
