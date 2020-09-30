@@ -6,6 +6,7 @@ module.exports = class extends Event {
     }
 
     async run(message) {
+        if(message.channel.type === "text") return;
         if(message.mentions.members.size > 0) {
             if(message.mentions.members.has(message.client.user.id)) {
                 message.reply("My prefix is: "+message.client.prefix)
