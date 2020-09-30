@@ -26,5 +26,6 @@
     "url": "https://github.com/LostNuke/NukeJS/issues"
   },
   "homepage": "https://github.com/LostNuke/NukeJS#readme",
-  "types": "typings/index.d.ts"
+  "types": "typings/index.d.ts",
+  "dependencies": {}
 }

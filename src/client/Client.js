@@ -27,7 +27,6 @@ class Client extends discord.Client {
 
         this.commands = new discord.Collection();
         this.events = new discord.Collection();
-        this.langs = new discord.Collection()
 
 
         this.on('ready', function () {
