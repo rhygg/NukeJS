@@ -23,7 +23,7 @@ module.exports = class extends Event {
         const cmd = message.client.commands.get(command) || message.client.commands.find(cmd => cmd.aliases.includes(command))
 
         if (!cmd) return
-        if (message.channel.type !== command.runIn) return;
+        if (message.channel.type !== cmd.runIn) return;
         if (cmd.cooldown > 0 && cmd.onCooldown.includes(message.author.id)) {
             message.reply("You need to wait " + cmd.cooldown / 1000 + " seconds before using this command again!");
             return;
@@ -44,7 +44,7 @@ module.exports = class extends Event {
                     }
                 }
             }
-            await cmd.run(message, args, message.author, message.client)
+            await cmd.run(message, args, message.client)
             if (cmd.cooldown > 0) {
                 cmd.onCooldown.push(message.author.id)
                 setTimeout(function () {

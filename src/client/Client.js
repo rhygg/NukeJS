@@ -19,7 +19,7 @@ class Client extends discord.Client {
         super.prefix = this.prefix
         this.eventsFolder = options.eventsFolder || './events'
         this.langsFolder = options.langsFolder || './languages'
-        this.readMessage = options.readyMessage || 'I have been started with the name {username}'
+        this.readyMessage = options.readyMessage || 'I have been started with the name {username}'
         this.errorLog = options.errorLog || undefined
         this.owner = options.owner || ""
         this.dev_ids = options.dev_ids || []
@@ -27,10 +27,11 @@ class Client extends discord.Client {
 
         this.commands = new discord.Collection();
         this.events = new discord.Collection();
+        this.checkers = new discord.Collection();
 
 
         this.on('ready', function () {
-            let msg = `${messagePrefix} ${this.readMessage}`
+            let msg = `${messagePrefix} ${this.readyMessage}`
             msg = msg.split('{username}').join(chalk.greenBright(this.user.username))
             msg = msg.split('{usertag}').join(chalk.greenBright(this.user.tag))
             msg = msg.split('{userid}').join(chalk.greenBright(this.user.id))
@@ -47,6 +48,7 @@ class Client extends discord.Client {
 
         var commandsDir = fs.readdirSync(this.commandsFolder)
         console.log(chalk.gray(`++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++`))
+        
 
         //++++++++++++++++++++++++++++++++++++++
         //     External Commands
@@ -211,9 +213,13 @@ class Client extends discord.Client {
             }
         }
 
+        //######################################
+        //#    External Checkers               #
+        //######################################
+        
+
 
         console.log(chalk.gray(`++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++`))
-
     }
 
 

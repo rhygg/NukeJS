@@ -33,7 +33,6 @@ class Command {
     /**
      * @param {Message} msg The message that led to triggering this command
      * @param {Array<string>} args The args of the command
-     * @param {User} executor The User that executed this command
      * @param {client} client The client of the Bot
      */
     async run() {
