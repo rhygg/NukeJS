@@ -53,7 +53,7 @@ module.exports = class extends Event {
         }catch (error) {
             console.error(error);
             let errorEmbed = new MessageEmbed()
-            .setAuthor(message.author.name, message.author.displayAvatarURL({ dynamic: true }))
+            .setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true }))
             .setTitle("An Error has occurred!")
             .setDescription("Command failed to with error:\n\n"+error.message)
             .setColor("#ee110f");
