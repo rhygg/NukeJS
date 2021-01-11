@@ -56,7 +56,7 @@ class Client extends discord.Client {
       console.log(msg);
     })
 
-    let externalCommandsDir = fs.readdirSync(this.commandsFolder);
+    let externalCommandsDir = fs.readdirSync(`${process.cwd()}/${this.commandsFolder}`);
     console.log(chalk.gray(`++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++`))
 
     //++++++++++++++++++++++++++++++++++++++
