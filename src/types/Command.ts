@@ -30,6 +30,7 @@ class Command {
 
   constructor(file: string, options: CommandOptions) {
     this.enabled = options.enabled;
+    if (this.enabled === undefined) this.enabled = true;
     if (!this.enabled) return;
     	
     this.runIn = options.runIn || ["text", "dm"];
