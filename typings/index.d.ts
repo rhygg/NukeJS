@@ -1,5 +1,5 @@
 declare module 'nukejs' {
-    import { ClientOptions } from "discord.js"
+    import { ClientOptions, Client as DiscordClient } from "discord.js"
 
     interface NukeClientOptions {
         discordOptions?: ClientOptions,
@@ -32,7 +32,7 @@ declare module 'nukejs' {
         enabled?: boolean
     }
 
-    export class Client {
+    export class Client extends DiscordClient{
         constructor(options?:NukeClientOptions)
     }
 
