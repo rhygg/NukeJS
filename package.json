@@ -2,7 +2,7 @@
   "name": "nukejs",
   "version": "1.0.0",
   "description": "A simple Discord Bot Framework that adds very useful features",
-  "main": "./src/index",
+  "main": "./dist/index",
   "bundleDependencies": false,
   "peerDependencies": {
     "discord.js": "12.*"
