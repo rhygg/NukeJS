@@ -7,7 +7,6 @@
   "peerDependencies": {
     "discord.js": "12.*"
   },
-  
   "devDependencies": {
     "@types/node": "^14.14.20"
   },
