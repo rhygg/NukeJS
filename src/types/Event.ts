@@ -22,7 +22,7 @@ interface EventOptions {
   name: string,
   enabled?: boolean
 }
-class Event {
+export class Event {
   public name: string;
   public enabled: boolean;
   constructor(options: EventOptions) {
@@ -32,4 +32,3 @@ class Event {
 
   async run() {}
 }
-module.exports = Event

@@ -28,17 +28,15 @@ const messagePrefix = `${chalk.gray('[')}${chalk.magentaBright('NukeJS Bot Clien
 
 interface NukeClientOptions {
   discordOptions?: discord.ClientOptions,
-  commandsFolder?: string,
   eventsFolder?: string,
   langsFolder?: string,
-  prefix: string,
   readyMessage?: string,
   errorLog?: string,
   owner?: string,
   dev_ids?: Array<string>
 }
 
-class Client extends discord.Client {
+export class Client extends discord.Client {
   public commandsFolder: string;
   public prefix: string;
   public eventsFolder: string;
@@ -52,8 +50,6 @@ class Client extends discord.Client {
   constructor(options: NukeClientOptions) {
     super(options.discordOptions);
 
-    this.commandsFolder = options.commandsFolder || './commands';
-    this.prefix = options.prefix || 'n>';
     this.eventsFolder = options.eventsFolder || './events';
     this.readyMessage = options.readyMessage || 'I have been started with the name {username}';
     this.owner = options.owner || "";
@@ -77,57 +73,6 @@ class Client extends discord.Client {
       console.log(msg);
     })
 
-    let externalCommandsDir = fs.readdirSync(`${process.cwd()}/${this.commandsFolder}`);
-    console.log(chalk.gray(`++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++`))
-
-    //++++++++++++++++++++++++++++++++++++++
-    //     External Commands
-    //++++++++++++++++++++++++++++++++++++++
-    try {
-      for (let file of externalCommandsDir) {
-        try {
-          if (file.endsWith(".js")) {
-            const command = new (require(`${process.cwd()}/${this.commandsFolder}/${file}`))(file);
-            if (!command.enabled) continue;
-
-            if (!checkCommand(command)) continue;
-
-            this.commands.set(command.name, command);
-
-            console.log(`${messagePrefix} Loaded external command ${chalk.greenBright(command.name)}`)
-          } else {
-            if (fs.lstatSync(file).isDirectory()) {
-              const subFolderCommands = fs.readdirSync(`${process.cwd()}/${this.commandsFolder}/${file}`).filter(file => file.endsWith(".js"))
-              for (let subFolderFile of subFolderCommands) {
-                try {
-                  const subFolderCommand = new (require(`${process.cwd()}/${this.commandsFolder}/${file}/${subFolderFile}`))(subFolderFile);
-                  if (!subFolderCommand.enabled) continue;
-                  if (!checkCommand(subFolderCommand)) continue;
-
-                  if (!subFolderCommand.category) subFolderCommand.category = file;
-                  this.commands.set(subFolderCommand.name, subFolderCommand);
-                  console.log(`${messagePrefix} Loaded external command ${chalk.greenBright(subFolderCommand.name)}`)
-                } catch (err) {
-                  if (err instanceof TypeError) {
-                    console.log(`${messagePrefix} ${chalk.redBright(`Malformed external command at ${chalk.blueBright(subFolderFile)}`)}`)
-                  } else {
-                    console.error(err)
-                  }
-                }
-              }
-            }
-          }
-        } catch (err) {
-          if (err instanceof TypeError) {
-            console.log(`${messagePrefix} ${chalk.redBright(`Malformed external command at ${chalk.blueBright(file)}`)}`)
-          } else {
-            console.error(err)
-          }
-        }
-      }
-    } catch {
-      console.log(`${messagePrefix} ${chalk.redBright("No external Commands defined")}`)
-    }
 
     console.log(chalk.gray(`++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++`))
     console.log(chalk.gray(`#                           Events                               #`))
@@ -160,21 +105,25 @@ class Client extends discord.Client {
     //++++++++++++++++++++++++++++++++++++++
     //     Internal Events
     //++++++++++++++++++++++++++++++++++++++
-    var internalEventsDir = fs.readdirSync(`${__dirname}/../events/`)
-    for (var internalEventFile of internalEventsDir) {
-      try {
-        if (this.events.has(internalEventFile)) {
-          console.log(`${messagePrefix} skipping internal event ${chalk.greenBright(internalEventFile)}`);
-          continue;
+    try {
+      var internalEventsDir = fs.readdirSync(`${__dirname}/../events/`)
+      for (var internalEventFile of internalEventsDir) {
+        try {
+          if (this.events.has(internalEventFile)) {
+            console.log(`${messagePrefix} skipping internal event ${chalk.greenBright(internalEventFile)}`);
+            continue;
+          }
+          const internalEvent = new (require(`${__dirname}/../events/${internalEventFile}`))()
+          this.on(internalEvent.name, internalEvent.run)
+          internalEvent.file = internalEventFile
+          this.events.set(internalEvent.file, internalEvent)
+          console.log(`${messagePrefix} Loaded internal event ${chalk.greenBright(internalEventFile)}`)
+        } catch (err) {
+          console.log(err)
         }
-        const internalEvent = new (require(`${__dirname}/../events/${internalEventFile}`))()
-        this.on(internalEvent.name, internalEvent.run)
-        internalEvent.file = internalEventFile
-        this.events.set(internalEvent.file, internalEvent)
-        console.log(`${messagePrefix} Loaded internal event ${chalk.greenBright(internalEventFile)}`)
-      } catch (err) {
-        console.log(err)
       }
+    } catch {
+      console.log(`${messagePrefix} ${chalk.redBright("No external Events defined")}`)
     }
     console.log(chalk.gray(`++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++`))
   }
@@ -213,4 +162,3 @@ function checkCommand(command: Command) {
   }
   return true;
 }
-module.exports = Client

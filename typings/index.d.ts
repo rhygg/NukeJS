@@ -20,7 +20,7 @@
  */
 
 declare module 'nukejs' {
-    import { ClientOptions, Client as DiscordClient } from "discord.js"
+    import { ClientOptions, Client as DiscordClient, UserResolvable } from "discord.js"
 
     interface NukeClientOptions {
         discordOptions?: ClientOptions,
@@ -47,6 +47,20 @@ declare module 'nukejs' {
         usage?: string,
         category: string
     }
+    interface commandLoaderOptions {
+        directory: string,
+        prefix: string,
+        allowMention?: boolean,
+        extensions?: Array<string>,
+        folderCategory?: boolean,
+        logCommands?: boolean,
+        handleEditing?: boolean,
+        blockBot?: boolean,
+        blockClient?: boolean,
+        ignoreCooldown?: Array<UserResolvable>,
+        ignorePerms?: Array<UserResolvable>,
+        defaultCommandOptions?: CommandOptions,
+      }
 
     interface EventOptions {
         name: string,
@@ -63,6 +77,10 @@ declare module 'nukejs' {
 
     export class Event {
         constructor(options:EventOptions)
+    }
+
+    export class CommandLoader {
+        constructor(options:commandLoaderOptions)
     }
 
 }

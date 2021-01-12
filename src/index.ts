@@ -19,8 +19,7 @@
  *   You should have received a copy of the GNU General Public License
  *   along with NukeJS.  If not, see <https://www.gnu.org/licenses/>.
  */
-module.exports = {
-    Client: require('./client/Client'),
-    Command: require('./types/Command'),
-    Event: require('./types/Event')
-}
+export { Client } from "./client/Client";
+export { Command } from "./types/Command";
+export { Event } from "./types/Event";
+export { CommandLoader } from "./structures/CommandLoader";

@@ -34,7 +34,7 @@ interface CommandOptions {
   usage?: string,
   category?: string,
 }
-class Command {
+export class Command {
   public enabled: boolean;
   public runIn: string[];
   public cooldown: number;
@@ -84,4 +84,3 @@ class Command {
      */
   async run() {}
 }
-module.exports = Command
