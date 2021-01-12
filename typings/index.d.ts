@@ -20,7 +20,7 @@
  */
 
 declare module 'nukejs' {
-    import { ClientOptions, Client as DiscordClient, UserResolvable } from "discord.js"
+    import { ClientOptions, Client as DiscordClient, UserResolvable, PermissionResolvable } from "discord.js"
 
     interface NukeClientOptions {
         discordOptions?: ClientOptions,
@@ -35,8 +35,8 @@ declare module 'nukejs' {
         runIn?: Array<string>,
         cooldown?: number,
         aliases?: Array<string>,
-        botPerms?: Array<string>,
-        userPerms?: Array<string>,
+        botPerms?: Array<PermissionResolvable>,
+        userPerms?: Array<PermissionResolvable>,
         name: string,
         description?: string,
         extendedHelp?: string,
