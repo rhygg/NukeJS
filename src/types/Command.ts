@@ -82,5 +82,5 @@ export class Command {
      * @param {Array<string>} args The args of the command
      * @param {client} client The client of the Bot
      */
-  async run() {}
+  async run(message, args, client) {}
 }

@@ -86,7 +86,7 @@ export class CommandLoader extends EventEmitter {
     console.log(chalk.gray(`++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++`))
     this.fetchAllCommands();
     console.log(chalk.gray(`++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n`))
-    
+
     this.client.on("ready", () => {
       this.client.on("message", async message => {
         if (message.partial) await message.fetch();
@@ -104,7 +104,7 @@ export class CommandLoader extends EventEmitter {
   }
 
   fetchAllCommands() {
-    
+
     const commandFiles = fs.readdirSync(this.directory);
     commandFiles.forEach(commandFile => {
       if (fs.lstatSync(this.directory + "/" + commandFile).isDirectory()) {
@@ -143,7 +143,7 @@ export class CommandLoader extends EventEmitter {
           }
         })
       }
-      
+
     })
   }
 
@@ -175,13 +175,24 @@ export class CommandLoader extends EventEmitter {
 
 
   async handle(message) {
-    if (!message.content.startsWith(this.prefix)) return;
+    let args;
+    if (message.content.startsWith(this.prefix)) {
+      args = message.content.substring(this.prefix.length).split(/ +/);
+    } else if (this.allowMention && message.content.startsWith(`<@${this.client.user.id}>`)) {
+      args = message.content.substring(`<@${this.client.user.id}>`.length).split(/ +/);
+    } else if (this.allowMention && message.content.startsWith(`<@!${this.client.user.id}>`)) {
+      args = message.content.substring(`<@!${this.client.user.id}>`.length).split(/ +/);
+    } else return;
+
+    if (args[0] === "" || args[0] === "") args.shift();
+
+    if (args.join("") === "" || args.join("") === " " || args.join("") === undefined) return;
     if (this.blockBot && message.author.bot) return;
     if (this.blockClient && message.author.id == this.client.user.id) return;
 
-    const args = message.content.slice(this.prefix.length).split(/ +/);
+
     const command = args.shift().toLowerCase();
-    const cmd = message.client.commands.get(command) || message.client.commands.find(cmd => cmd.aliases.includes(command));
+    const cmd = this.Commands.get(command) || this.Commands.find(cmd => cmd.aliases.includes(command));
 
     if (!cmd) return;
     if (!cmd.runIn.includes(message.channel.type)) return;
@@ -205,9 +216,9 @@ export class CommandLoader extends EventEmitter {
           }
         }
       }
-      if (cmd.onCooldown.includes(message.author.id) && !this.ignoreCooldown.includes(message.author.id)) throw new Error("You are currently on Cooldown! Please try again later!");
+
       await cmd.run(message, args, message.client);
-      if(this.logCommands) this.Logger.LOG_COMMAND(cmd.name, message.user.username, message.guild.name); 
+      if (this.logCommands) this.Logger.LOG_COMMAND(cmd.name, message.user.username, message.guild.name);
       if (cmd.cooldown > 0) {
         cmd.onCooldown.push(message.author.id);
         setTimeout(function () {
