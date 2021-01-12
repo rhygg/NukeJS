@@ -24,12 +24,8 @@ declare module 'nukejs' {
 
     interface NukeClientOptions {
         discordOptions?: ClientOptions,
-        commandsFolder?: string,
         eventsFolder?: string,
-        langsFolder?: string,
-        prefix: string,
         readyMessage?: string,
-        errorLog?: string,
         owner?: string,
         dev_ids?: Array<string>
     }
