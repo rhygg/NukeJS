@@ -21,7 +21,10 @@
   },
   "keywords": [
     "Discord",
-    "Framework"
+    "Framework",
+    "NukeJS",
+    "discordjs",
+    "discord.js"
   ],
   "author": "LostNuke",
   "license": "GPL-3",
