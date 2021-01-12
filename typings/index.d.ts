@@ -76,7 +76,7 @@ declare module 'nukejs' {
     }
 
     export class CommandLoader {
-        constructor(options:commandLoaderOptions)
+        constructor(client: Client, options:commandLoaderOptions)
     }
 
 }
