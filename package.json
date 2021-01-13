@@ -32,7 +32,7 @@
   "bugs": {
     "url": "https://github.com/LostNuke/NukeJS/issues"
   },
-  "homepage": "https://github.com/LostNuke/NukeJS#readme",
+  "homepage": "https://nukejs.xyz/#/",
   "types": "typings/index.d.ts",
   "dependencies": {
     "chalk": "^4.1.0",
