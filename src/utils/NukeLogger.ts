@@ -7,11 +7,11 @@ export class NukeLogger {
     }
 
     MALFORMED_COMMAND(path) {
-        console.log(`${messagePrefix} ${chalk.redBright(`Malformed external command at ${chalk.blueBright(path)}`)}`)
+        console.log(`${messagePrefix} ${chalk.redBright(`Malformed command at ${chalk.blueBright(path)}`)}`)
     }
 
     LOADED_COMMAND(command) {
-        console.log(`${messagePrefix} Loaded external command ${chalk.greenBright(command.name)}`);
+        console.log(`${messagePrefix} Loaded command ${chalk.greenBright(command.name)}`);
     }
 
     REMOVED_COMMAND(command) {
@@ -20,5 +20,13 @@ export class NukeLogger {
 
     LOG_COMMAND(commandName, userName, guildName) {
         console.log(`${messagePrefix} Command ${chalk.blueBright(commandName)} has been run by ${userName} in ${guildName}`);
+    }
+
+    LOADED_EVENT(eventFile) {
+        console.log(`${messagePrefix} Loaded Eventt ${chalk.greenBright(eventFile)}`);
+    }
+
+    LOADED_INHIBITOR(inhibitor) {
+        console.log(`${messagePrefix} Loaded Inhibitor ${chalk.greenBright(inhibitor)}`);
     }
 }

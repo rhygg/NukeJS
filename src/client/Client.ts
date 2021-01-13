@@ -22,6 +22,7 @@
 import discord = require("discord.js");
 import chalk = require("chalk");
 import fs = require("fs");
+import { Inhibitor } from "../types/Inhibitor";
 
 const messagePrefix = `${chalk.gray('[')}${chalk.magentaBright('NukeJS Bot Client')}${chalk.gray(']')}`
 
@@ -43,6 +44,7 @@ export class Client extends discord.Client {
   public readyMessage: string;
   public owner: string;
   public dev_ids: string[];
+  public InhibitorStore: discord.Collection<string, Inhibitor> = new discord.Collection<string, Inhibitor>();
 
   public commands: discord.Collection<string, object> = new discord.Collection();
   public events: discord.Collection<string, object> = new discord.Collection();;
@@ -73,59 +75,6 @@ export class Client extends discord.Client {
       console.log(msg);
     })
 
-
-    console.log(chalk.gray(`++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++`))
-    console.log(chalk.gray(`#                           Events                               #`))
-    console.log(chalk.gray(`++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++`))
-
-    //++++++++++++++++++++++++++++++++++++++
-    //     External Events
-    //++++++++++++++++++++++++++++++++++++++
-    try {
-      let externalEventsDir = fs.readdirSync(`${process.cwd()}/${this.eventsFolder}`);
-      for (let externalEventFile of externalEventsDir) {
-        try {
-          const externalEvent = new (require(`${process.cwd()}/${this.eventsFolder}/${externalEventFile}`))()
-          if (!externalEvent.enabled) continue;
-          this.on(externalEvent.name, externalEvent.run);
-          this.events.set(externalEvent.file, externalEvent);
-          console.log(`${messagePrefix} Loaded external event ${chalk.greenBright(externalEventFile)}`)
-        } catch (err) {
-          if (err instanceof TypeError) {
-            console.log(`${messagePrefix} ${chalk.redBright(`Malformed external Event at ${chalk.blueBright(externalEventFile)}`)}`)
-          } else {
-            console.log(err)
-          }
-        }
-      }
-    } catch {
-      console.log(`${messagePrefix} ${chalk.redBright("No external Events defined")}`)
-    }
-
-    //++++++++++++++++++++++++++++++++++++++
-    //     Internal Events
-    //++++++++++++++++++++++++++++++++++++++
-    try {
-      var internalEventsDir = fs.readdirSync(`${__dirname}/../events/`)
-      for (var internalEventFile of internalEventsDir) {
-        try {
-          if (this.events.has(internalEventFile)) {
-            console.log(`${messagePrefix} skipping internal event ${chalk.greenBright(internalEventFile)}`);
-            continue;
-          }
-          const internalEvent = new (require(`${__dirname}/../events/${internalEventFile}`))()
-          this.on(internalEvent.name, internalEvent.run)
-          internalEvent.file = internalEventFile
-          this.events.set(internalEvent.file, internalEvent)
-          console.log(`${messagePrefix} Loaded internal event ${chalk.greenBright(internalEventFile)}`)
-        } catch (err) {
-          console.log(err)
-        }
-      }
-    } catch {
-      console.log(`${messagePrefix} ${chalk.redBright("No external Events defined")}`)
-    }
-    console.log(chalk.gray(`++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++`))
   }
 }
 

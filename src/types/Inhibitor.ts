@@ -1,4 +1,5 @@
-'use strict';
+import { Command } from "./Command";
+
 /**
  * 
  *   NukeJS -- A Discord Bot Framework
@@ -19,11 +20,19 @@
  *   You should have received a copy of the GNU General Public License
  *   along with NukeJS.  If not, see <https://www.gnu.org/licenses/>.
  */
-export { Client } from "./client/Client";
-export { Command } from "./types/Command";
-export { Event } from "./types/Event";
-export { Inhibitor } from "./types/Inhibitor"
+interface InhibitorOptions {
+  name: string,
+  enabled?: boolean
+}
+export class Inhibitor {
+  public name: string;
+  public enabled: boolean;
+  constructor(options: InhibitorOptions) {
+    if(!options.name) throw new Error("You need to declare a name for your Inhibitor!")
+    this.enabled = options.enabled || true
 
-export { CommandLoader } from "./structures/CommandLoader";
-export { EventLoader } from "./structures/EventLoader";
-export { InhibitorLoader } from "./structures/InhibitorLoader"
+    this.name = options.name;
+  }
+
+  async run(message: string, command: Command, loaderName: string): Promise<any> {}
+}

@@ -41,7 +41,8 @@ declare module 'nukejs' {
         description?: string,
         extendedHelp?: string,
         usage?: string,
-        category: string
+        ignoredInhibitors: Array<string>,
+        category?: string
     }
     interface commandLoaderOptions {
         directory: string,
@@ -55,28 +56,35 @@ declare module 'nukejs' {
         blockClient?: boolean,
         ignoreCooldown?: Array<UserResolvable>,
         ignorePerms?: Array<UserResolvable>,
-        defaultCommandOptions?: CommandOptions,
-      }
+        ignoredInhibitors?: Array<string>,
+    }
 
+    interface EventLoaderOptions {
+        directory: string,
+        extensions?: Array<string>
+    }
     interface EventOptions {
         name: string,
         enabled?: boolean
     }
 
-    export class Client extends DiscordClient{
-        constructor(options?:NukeClientOptions)
+    export class Client extends DiscordClient {
+        constructor(options?: NukeClientOptions)
     }
 
     export class Command {
-        constructor(file?:string,options?:CommandOptions)
+        constructor(file?: string, options?: CommandOptions)
     }
 
     export class Event {
-        constructor(options:EventOptions)
+        constructor(options: EventOptions)
     }
 
     export class CommandLoader {
-        constructor(client: Client, options:commandLoaderOptions)
+        constructor(client: Client, options: commandLoaderOptions)
+    }
+    export class EventLoader {
+        constructor(client: Client, options: EventLoaderOptions)
     }
 
 }

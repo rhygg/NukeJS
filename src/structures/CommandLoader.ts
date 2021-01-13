@@ -23,13 +23,15 @@ import { Client } from "../index";
 import { Command } from "../types/Command";
 import * as fs from "fs";
 import { NukeLogger } from "../utils/NukeLogger";
-const EventEmitter = require('events');
+import { Loader } from "./Loader"
 import { MessageEmbed } from "discord.js";
 import * as chalk from "chalk";
+import { Inhibitor } from "../types/Inhibitor";
 
 interface commandLoaderOptions {
   directory: string,
   prefix: string,
+  name?: string,
   allowMention?: boolean,
   extensions?: Array<string>,
   folderCategory?: boolean,
@@ -39,11 +41,14 @@ interface commandLoaderOptions {
   blockClient?: boolean,
   ignoreCooldown?: Array<UserResolvable>,
   ignorePerms?: Array<UserResolvable>,
+  ignoredInhibitors?: Array<string>
+
 }
 
-export class CommandLoader extends EventEmitter {
+export class CommandLoader extends Loader {
   directory: string;
   prefix: string;
+  name: string;
   allowMention: boolean;
   extensions: Array<string>;
   folderCategory: boolean;
@@ -53,22 +58,24 @@ export class CommandLoader extends EventEmitter {
   blockClient: boolean;
   ignoreCooldown: Array<UserResolvable>;
   ignorePerms: Array<UserResolvable>;
+  ignoredInhibitors: Array<string>;
   client: Client;
   Commands: Collection<string, Command> = new Collection<string, Command>();
   Logger: NukeLogger = new NukeLogger();
 
   constructor(client, options: commandLoaderOptions = { directory: "./commands", prefix: "n>" }) {
-    super();
-    if (!options.directory) throw new Error("Property <directory> cannot be empty in commandLoaderOptions");
+    super(client, { directory: options.directory, extensions: options.extensions });
     if (!options.prefix) throw new Error("Property <prefix> cannot be empty in commandLoaderOptions");
-    if (!(client instanceof Client)) throw new Error("Argument <client> must be a NukeJS instance")
+
 
     this.directory = process.cwd() + "/" + options.directory;
     this.prefix = options.prefix;
     this.client = client;
 
+    this.name = options.name || "";
     this.allowMention = options.allowMention || true;
     this.extensions = options.extensions || [".js", ".ts"];
+
     this.folderCategory = options.folderCategory || true;
     this.logCommands = options.logCommands || false;
     this.handleEditing = options.handleEditing || false;
@@ -76,6 +83,7 @@ export class CommandLoader extends EventEmitter {
     this.blockClient = options.blockClient || true;
     this.ignoreCooldown = options.ignoreCooldown || [client.owner];
     this.ignorePerms = options.ignorePerms || [];
+    this.ignoredInhibitors = options.ignoredInhibitors || [];
 
     this.init();
   }
@@ -84,7 +92,7 @@ export class CommandLoader extends EventEmitter {
     console.log(chalk.gray(`++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++`))
     console.log(chalk.gray(`#         Loading commands with prefix: ${this.prefix}           #`))
     console.log(chalk.gray(`++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++`))
-    this.fetchAllCommands();
+    this.fetchAll();
     console.log(chalk.gray(`++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n`))
 
     this.client.on("ready", () => {
@@ -103,48 +111,21 @@ export class CommandLoader extends EventEmitter {
     })
   }
 
-  fetchAllCommands() {
-
-    const commandFiles = fs.readdirSync(this.directory);
-    commandFiles.forEach(commandFile => {
-      if (fs.lstatSync(this.directory + "/" + commandFile).isDirectory()) {
-        this.readDirRecursively(this.directory + "/" + commandFile).forEach(file => {
-          try {
-            const subCommand: Command = new (require(file))(file);
-            if (this.folderCategory) subCommand.category = commandFile;
-            this.Commands.set(subCommand.name, subCommand);
-            this.Logger.LOADED_COMMAND(subCommand);
-            this.emit("loaded", { path: file })
-          } catch (err) {
-            if (err instanceof TypeError) {
-              this.Logger.MALFORMED_COMMAND(`${this.directory}/${commandFile}/${file}`);
-              this.emit("malformed", { path: `${this.directory}/${commandFile}/${file}` })
-            } else {
-              console.error(err)
-            }
-          }
-        });
-      } else if (fs.lstatSync(this.directory + "/" + commandFile).isFile()) {
-        this.extensions.forEach(extension => {
-          if (commandFile.endsWith(extension)) {
-            try {
-              const command: Command = new (require(`${this.directory}/${commandFile}`))(commandFile);
-              this.Commands.set(command.name, command);
-              this.Logger.LOADED_COMMAND(command);
-              this.emit("loaded", { path: `${this.directory}/${commandFile}` })
-            } catch (err) {
-              if (err instanceof TypeError) {
-                this.Logger.MALFORMED_COMMAND(this.directory + "/" + commandFile);
-                this.emit("malformed", { path: `${this.directory}/${commandFile}/` })
-              } else {
-                console.error(err)
-              }
-            }
-          }
-        })
+  register(file: string, path: string, category?: string) {
+    try {
+      const command: Command = new (require(path))(file);
+      if (this.folderCategory && category !== undefined) command.category = category;
+      this.Commands.set(command.name, command);
+      this.Logger.LOADED_COMMAND(command);
+      this.emit("loaded", { path: command.file })
+    } catch (err) {
+      if (err instanceof TypeError) {
+        this.Logger.MALFORMED_COMMAND(path);
+        this.emit("malformed", { path: path })
+      } else {
+        console.error(err)
       }
-
-    })
+    }
   }
 
   remove(command: string) {
@@ -156,23 +137,20 @@ export class CommandLoader extends EventEmitter {
     }
   }
 
-  readDirRecursively(path: string): Array<string> {
-    const items = fs.readdirSync(path)
-    let files = []
-    items.forEach(item => {
-      if (fs.lstatSync(path + "/" + item).isFile()) {
-        this.extensions.forEach(extension => {
-          if (item.endsWith(extension)) {
-            files.push(path + "/" + item);
+  async checkInihibitors(message, cmd) {
+    return await new Promise((resolve, reject) => {
+      this.client.InhibitorStore.forEach(async inhibitor => {
+        if (!this.ignoredInhibitors.includes(inhibitor.name)) {
+          if ((await inhibitor.run(message, cmd, this.name)) === false) {
+            resolve(true);
           }
-        })
-      } else if (fs.lstatSync(path + "/" + item).isDirectory()) {
-        files.push(this.readDirRecursively(path + "/" + item));
-      }
+        } else {
+          resolve(false);
+        }
+      })
+      resolve(false);
     })
-    return files
   }
-
 
   async handle(message) {
     let args;
@@ -195,6 +173,13 @@ export class CommandLoader extends EventEmitter {
     const cmd = this.Commands.get(command) || this.Commands.find(cmd => cmd.aliases.includes(command));
 
     if (!cmd) return;
+
+    // Inhibitor Check
+    for (let inhibitorKey of this.client.InhibitorStore.keyArray()) {
+      if (this.ignoredInhibitors.includes(inhibitorKey)) continue;
+      if (await this.client.InhibitorStore.get(inhibitorKey).run(message, cmd, this.name) === false) return;
+    }
+
     if (!cmd.runIn.includes(message.channel.type)) return;
     if (cmd.cooldown > 0 && cmd.onCooldown.includes(message.author.id)) {
       message.reply("You need to wait " + cmd.cooldown / 1000 + " seconds before using this command again!");
@@ -218,6 +203,7 @@ export class CommandLoader extends EventEmitter {
       }
 
       await cmd.run(message, args, message.client);
+      this.emit("executed", { command: cmd.name })
       if (this.logCommands) this.Logger.LOG_COMMAND(cmd.name, message.user.username, message.guild.name);
       if (cmd.cooldown > 0) {
         cmd.onCooldown.push(message.author.id);
