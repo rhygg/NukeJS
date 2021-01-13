@@ -1,7 +1,8 @@
 <div align="center">
 <h1> NukeJS</h1>
   <br>
-  <a href="https://www.npmjs.com/package/nukejs"><img alt="npm" src="https://img.shields.io/npm/v/nukejs"></a>
+  <a href="https://www.npmjs.com/package/nukejs"><img alt="npm" src="https://img.shields.io/npm/v/nukejs"> </a>
+  <a href="https://img.shields.io/static/v1?label=Docs&color=ff69b4"><img alt="npm" src="https://nukejs.xyz/#/"> </a>
 </div>
 
 # About
