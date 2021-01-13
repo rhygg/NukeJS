@@ -43,3 +43,4 @@ Event | when | data
 loaded | Emitted whenever a command is emitted | path: Path to Command File
 malformed | Emitted whenever a malformed command was found | path: Path to Command File
 executed | Emitted whenever a command is executed | command: Command name
+error | executed whenever an error occurs | command: Command Name; error: Error that was received

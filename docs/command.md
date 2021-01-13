@@ -15,7 +15,8 @@ module.exports = class extends Command {
     async run(message, args, client) {
         
     }
-}```
+}
+```
 
 ## Parameter
 

@@ -222,8 +222,9 @@ export class CommandLoader extends Loader {
         .setTitle("An Error has occurred!")
         .setDescription("Command failed to with error:\n\n" + error.message)
         .setColor("#ee110f");
-
       message.channel.send(errorEmbed);
+
+      this.emit("error", {command: cmd.name, error: error})
     }
   }
 }

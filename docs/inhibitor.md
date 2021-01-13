@@ -1,5 +1,5 @@
 # Inhibitor
-Inhibitors are like blockers that run before a command is actually executed. This can be useful if you want to make costum bot perms checks or maybe have a blacklist. 
+Inhibitors are like blockers that run before a command is actually executed. This can be useful if you want to make custom bot perms checks or maybe have a blacklist. 
 
 ```js
 const {Inhibitor} = require('nukejs')
