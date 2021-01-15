@@ -23,7 +23,7 @@ export class NukeLogger {
     }
 
     LOADED_EVENT(eventFile) {
-        console.log(`${messagePrefix} Loaded Eventt ${chalk.greenBright(eventFile)}`);
+        console.log(`${messagePrefix} Loaded Event ${chalk.greenBright(eventFile)}`);
     }
 
     LOADED_INHIBITOR(inhibitor) {

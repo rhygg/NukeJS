@@ -8,7 +8,7 @@ module.exports = class extends Command {
     constructor(file) {
         super(file, {
             name: "",
-            runIn: ""
+            runIn: ["text"]
         })
     }
 

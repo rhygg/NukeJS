@@ -55,7 +55,7 @@ module.exports = class extends Command {
     constructor(file) {
         super(file, {
             name: "test",
-            runIn: "text"
+            runIn: ["text"]
         });
     }
 
@@ -64,7 +64,9 @@ module.exports = class extends Command {
     }
 }
 ```
-This would be a basic command that sends the message "Hewwo!" to the Channel. Now while this is as basic as it gets, it still goes on with more settings to change and more options to pick from. More on that on the Commands section tho! ;)
+This would be a basic command that sends the message "Hewwo!" to the Channel. 
+In the example above, name would define how the command is run so for this command you would go n>test, whereas "runIn" is a array that defines the the channel types this channel can be run in. Read more on that in the commands section.
+Now while this is as basic as it gets, it still goes on with more settings to change and more options to pick from. More on that on the Commands section tho! ;)
 
 ## Running the Bot
 
