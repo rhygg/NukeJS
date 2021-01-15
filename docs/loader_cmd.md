@@ -27,8 +27,8 @@ extensions | Array<string> | In cases that you happen to use another extension o
 folderCategory | boolean | This option activates if the Folder the Command is in should be used as the category, keep in mind. If you file is in moderation -> admins -> ban.js, moderation will be its category and not admins | true
 logCommands | boolean | Whether or not the commands that were run should be logged in the console | false
 handleEditing | boolean | Whether editing a message should also trigger the command handler | false
-blockBot | boolean | whether bots are allowed to run the commands | true
-blockClient | boolean | Whether the Client itself should be allowed to run the commands | true
+blockBot | boolean | If Bots should be blocked from running commands | true
+blockClient | boolean | If the Client should be blocked from running commands | true
 ignoreCooldown | Array<string> | An array with IDs of users who can bypass the Cooldown | [OwnerID]
 ignorePerms | Array<string> | An array with IDs of users that can bypass the perm checks | []
 ignoredInhibitors | Array<string> | Array of Inhibitors (by name) that are ignored by this Loader | []
