@@ -1,3 +1,5 @@
+/* eslint-disable import/no-dynamic-require */
+/* eslint-disable global-require */
 /*
  * NukeJS - Discordjs Bot Framework
  *
@@ -23,41 +25,43 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-import { Client } from "../index";
-import { Inhibitor } from "../types/Inhibitor";
-import { Loader } from "./Loader";
-import * as chalk from "chalk";
-import { NukeLogger } from "../utils/NukeLogger";
-
+import * as chalk from 'chalk';
+import { Client } from '../index';
+import Inhibitor from '../types/Inhibitor';
+import Loader from './Loader';
+import NukeLogger from '../utils/NukeLogger';
 
 interface InhibitorLoaderOptions {
   directory: string,
   extensions: Array<string>
 }
 
-export class InhibitorLoader extends Loader {
+export default class extends Loader {
   client: Client;
+
   Logger: NukeLogger = new NukeLogger();
+
   constructor(client, options: InhibitorLoaderOptions) {
-    super(client, options)
+    super(client, options);
 
     this.init();
   }
 
   init() {
-    console.log(chalk.gray(`++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++`))
-    console.log(chalk.gray(`#                          Inhibitor                             #`))
-    console.log(chalk.gray(`++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++`))
+    console.log(chalk.gray('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'));
+    console.log(chalk.gray('#                          Inhibitor                             #'));
+    console.log(chalk.gray('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'));
     this.fetchAll();
-    console.log(chalk.gray(`++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n`))
+    console.log(chalk.gray('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n'));
   }
 
+  // eslint-disable-next-line no-unused-vars
   register(file: string, path: string, category?: string) {
     try {
       const inhibitor: Inhibitor = new (require(path))(file);
       this.client.InhibitorStore.set(inhibitor.name, inhibitor);
       this.Logger.LOADED_INHIBITOR(path.substring(process.cwd().length + 1));
-    } catch(error) {
+    } catch (error) {
       console.error(error);
     }
   }

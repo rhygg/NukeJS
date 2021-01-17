@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /*
  * NukeJS - Discordjs Bot Framework
  *
@@ -22,31 +23,32 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-import { Client } from "../index";
-import { Event } from "../types/event";
-import * as fs from "fs";
-import { NukeLogger } from "../utils/NukeLogger";
-import { Loader } from "./Loader"
-import * as chalk from "chalk";
+/* eslint-disable import/no-dynamic-require */
+/* eslint-disable global-require */
+import * as chalk from 'chalk';
+import Event from '../types/event';
+import NukeLogger from '../utils/NukeLogger';
+import Loader from './Loader';
 
 interface EventLoaderOptions {
   directory: string,
   extensions?: Array<string>
 }
-export class EventLoader extends Loader {
+export default class extends Loader {
   Logger: NukeLogger = new NukeLogger();
-  constructor(client, options: EventLoaderOptions = { directory: "./events" }) {
+
+  constructor(client, options: EventLoaderOptions = { directory: './events' }) {
     super(client, options);
 
     this.init();
   }
 
   init() {
-    console.log(chalk.gray(`++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++`))
-    console.log(chalk.gray(`#                           Events                               #`))
-    console.log(chalk.gray(`++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++`))
+    console.log(chalk.gray('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'));
+    console.log(chalk.gray('#                           Events                               #'));
+    console.log(chalk.gray('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'));
     this.fetchAll();
-    console.log(chalk.gray(`++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n`))
+    console.log(chalk.gray('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n'));
   }
 
   register(file: string, path: string) {
@@ -55,12 +57,5 @@ export class EventLoader extends Loader {
     this.Logger.LOADED_EVENT(path.substring(process.cwd().length + 1));
   }
 
-  remove(event: string) {
-    if (this.events.has(event)) {
-      this.events.delete(event);
-      this.Logger
-    } else {
-      throw new Error("event " + event + " was never registered!")
-    }
-  }
+  remove(event: string) {}
 }

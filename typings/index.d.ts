@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable max-classes-per-file */
 /*
  * NukeJS - Discordjs Bot Framework
  *
@@ -24,14 +26,16 @@
  */
 
 declare module 'nukejs' {
-    import { ClientOptions, Client as DiscordClient, UserResolvable, PermissionResolvable } from "discord.js"
+    import {
+      ClientOptions, Client as DiscordClient, UserResolvable, PermissionResolvable,
+    } from 'discord.js';
 
     interface NukeClientOptions {
         discordOptions?: ClientOptions,
         eventsFolder?: string,
         readyMessage?: string,
         owner?: string,
-        dev_ids?: Array<string>
+        devIds?: Array<string>
     }
 
     interface CommandOptions {
@@ -73,22 +77,22 @@ declare module 'nukejs' {
     }
 
     export class Client extends DiscordClient {
-        constructor(options?: NukeClientOptions)
+      constructor(options?: NukeClientOptions)
     }
 
     export class Command {
-        constructor(file?: string, options?: CommandOptions)
+      constructor(file?: string, options?: CommandOptions)
     }
 
     export class Event {
-        constructor(options: EventOptions)
+      constructor(options: EventOptions)
     }
 
     export class CommandLoader {
-        constructor(client: Client, options: commandLoaderOptions)
+      constructor(client: Client, options: commandLoaderOptions)
     }
     export class EventLoader {
-        constructor(client: Client, options: EventLoaderOptions)
+      constructor(client: Client, options: EventLoaderOptions)
     }
 
 }

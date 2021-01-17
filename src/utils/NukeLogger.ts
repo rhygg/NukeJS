@@ -22,35 +22,32 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-const chalk = require("chalk")
-const messagePrefix = `${chalk.gray('[')}${chalk.magentaBright('NukeJS Bot Client')}${chalk.gray(']')}`
+import * as chalk from 'chalk';
 
-export class NukeLogger {
-    constructor() {
+const messagePrefix = `${chalk.gray('[')}${chalk.magentaBright('NukeJS Bot Client')}${chalk.gray(']')}`;
 
-    }
+export default class {
+  MALFORMED_COMMAND(path) {
+    console.log(`${messagePrefix} ${chalk.redBright(`Malformed command at ${chalk.blueBright(path)}`)}`);
+  }
 
-    MALFORMED_COMMAND(path) {
-        console.log(`${messagePrefix} ${chalk.redBright(`Malformed command at ${chalk.blueBright(path)}`)}`)
-    }
+  LOADED_COMMAND(command) {
+    console.log(`${messagePrefix} Loaded command ${chalk.greenBright(command.name)}`);
+  }
 
-    LOADED_COMMAND(command) {
-        console.log(`${messagePrefix} Loaded command ${chalk.greenBright(command.name)}`);
-    }
+  REMOVED_COMMAND(command) {
+    console.log(`${messagePrefix} ${chalk.redBright(`Removed Command ${chalk.blueBright(command)}`)}`);
+  }
 
-    REMOVED_COMMAND(command) {
-        console.log(`${messagePrefix} ${chalk.redBright(`Removed Command ${chalk.blueBright(command)}`)}`)
-    }
+  LOG_COMMAND(commandName, userName, guildName) {
+    console.log(`${messagePrefix} Command ${chalk.blueBright(commandName)} has been run by ${userName} in ${guildName}`);
+  }
 
-    LOG_COMMAND(commandName, userName, guildName) {
-        console.log(`${messagePrefix} Command ${chalk.blueBright(commandName)} has been run by ${userName} in ${guildName}`);
-    }
+  LOADED_EVENT(eventFile) {
+    console.log(`${messagePrefix} Loaded Event ${chalk.greenBright(eventFile)}`);
+  }
 
-    LOADED_EVENT(eventFile) {
-        console.log(`${messagePrefix} Loaded Event ${chalk.greenBright(eventFile)}`);
-    }
-
-    LOADED_INHIBITOR(inhibitor) {
-        console.log(`${messagePrefix} Loaded Inhibitor ${chalk.greenBright(inhibitor)}`);
-    }
+  LOADED_INHIBITOR(inhibitor) {
+    console.log(`${messagePrefix} Loaded Inhibitor ${chalk.greenBright(inhibitor)}`);
+  }
 }

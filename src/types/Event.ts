@@ -1,3 +1,5 @@
+/* eslint-disable no-empty-function */
+/* eslint-disable class-methods-use-this */
 /*
  * NukeJS - Discordjs Bot Framework
  *
@@ -26,12 +28,14 @@ interface EventOptions {
   name: string,
   enabled?: boolean
 }
-export class Event {
+export default class {
   public name: string;
+
   public enabled: boolean;
+
   constructor(options: EventOptions) {
-    this.name = options.name || 'message'
-    this.enabled = options.enabled || true
+    this.name = options.name || 'message';
+    this.enabled = options.enabled || true;
   }
 
   async run() {}

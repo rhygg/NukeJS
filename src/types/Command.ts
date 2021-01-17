@@ -1,3 +1,6 @@
+/* eslint-disable no-empty-function */
+/* eslint-disable no-unused-vars */
+/* eslint-disable class-methods-use-this */
 /*
  * NukeJS - Discordjs Bot Framework
  *
@@ -23,7 +26,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-import { BitFieldResolvable, PermissionString } from "discord.js";
+import { BitFieldResolvable, PermissionString } from 'discord.js';
 
 interface CommandOptions {
   enabled?: boolean,
@@ -38,47 +41,59 @@ interface CommandOptions {
   usage?: string,
   category?: string,
 }
-export class Command {
+export default class {
   public enabled: boolean;
+
   public runIn: string[];
+
   public cooldown: number;
+
   public onCooldown: string[];
+
   public aliases: string[];
+
   public botPerms: Array<BitFieldResolvable<PermissionString>>;
+
   public userPerms: Array<BitFieldResolvable<PermissionString>>;
+
   public name: string;
+
   public description: string;
+
   public extendedHelp: string;
+
   public usage: string;
+
   public category: string;
+
   public file: string;
 
   constructor(file: string, options: CommandOptions) {
     this.enabled = options.enabled;
     if (this.enabled === undefined) this.enabled = true;
     if (!this.enabled) return;
-    	
-    this.runIn = options.runIn || ["text", "dm"];
-    
+
+    this.runIn = options.runIn || ['text', 'dm'];
+
     this.cooldown = Math.abs(options.cooldown) || 0;
-    
+
     if (this.cooldown > 0) this.onCooldown = [];
-    
+
     this.aliases = options.aliases || [];
 
     this.botPerms = options.botPerms || [];
 
-    this.userPerms = options.userPerms || []
+    this.userPerms = options.userPerms || [];
 
-    this.name = options.name || file.substring(0,file.length-3)
+    this.name = options.name || file.substring(0, file.length - 3);
 
-    this.description = options.description || ""
+    this.description = options.description || '';
 
-    this.extendedHelp = options.extendedHelp || this.description
+    this.extendedHelp = options.extendedHelp || this.description;
 
-    this.usage = options.usage || ""
+    this.usage = options.usage || '';
 
-    this.file = file
+    this.file = file;
   }
 
   /**

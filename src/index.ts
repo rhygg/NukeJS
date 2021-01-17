@@ -1,4 +1,3 @@
-'use strict';
 /*
  * NukeJS - Discordjs Bot Framework
  *
@@ -23,11 +22,11 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-export { Client } from "./client/Client";
-export { Command } from "./types/Command";
-export { Event } from "./types/Event";
-export { Inhibitor } from "./types/Inhibitor"
+export { default as Client } from './client/Client';
+export { default as Command } from './types/Command';
+export { default as Event } from './types/Event';
+export { default as Inhibitor } from './types/Inhibitor';
 
-export { CommandLoader } from "./structures/CommandLoader";
-export { EventLoader } from "./structures/EventLoader";
-export { InhibitorLoader } from "./structures/InhibitorLoader"
+export { default as CommandLoader } from './structures/CommandLoader';
+export { default as EventLoader } from './structures/EventLoader';
+export { default as InhibitorLoader } from './structures/InhibitorLoader';

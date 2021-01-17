@@ -1,4 +1,9 @@
-import { Command } from "./Command";
+/* eslint-disable import/no-unresolved */
+/* eslint-disable no-empty-function */
+/* eslint-disable no-unused-vars */
+/* eslint-disable class-methods-use-this */
+
+import Command from './Command';
 /*
  * NukeJS - Discordjs Bot Framework
  *
@@ -27,12 +32,14 @@ interface InhibitorOptions {
   name: string,
   enabled?: boolean
 }
-export class Inhibitor {
+export default class {
   public name: string;
+
   public enabled: boolean;
+
   constructor(options: InhibitorOptions) {
-    if(!options.name) throw new Error("You need to declare a name for your Inhibitor!")
-    this.enabled = options.enabled || true
+    if (!options.name) throw new Error('You need to declare a name for your Inhibitor!');
+    this.enabled = options.enabled || true;
 
     this.name = options.name;
   }
