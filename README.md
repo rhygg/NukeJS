@@ -5,6 +5,7 @@
   <a href="https://nukejs.xyz/"><img alt="Docs" src="https://img.shields.io/badge/Docs-ff69b4"> </a>
 </div>
 
+**NOTICE! License changed since version 2.3.4! If you want the GPL version you can find it on Github in the GPL-3 branch!**
 # About
 What is NukeJS I hear? Its a Framework built for discord.js which allows adds in some extra features.
 
