@@ -28,7 +28,7 @@
     "discordjs",
     "discord.js"
   ],
-  "license": "GPL-3",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/LostNuke/NukeJS/issues"
   },
