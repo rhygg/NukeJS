@@ -40,7 +40,7 @@ declare module 'nukejs' {
 
     interface CommandOptions {
         enabled?: boolean,
-        runIn?: Array<string>,
+        runIn?: ("text"|"dm")[],
         cooldown?: number,
         aliases?: Array<string>,
         botPerms?: Array<PermissionResolvable>,
@@ -49,7 +49,7 @@ declare module 'nukejs' {
         description?: string,
         extendedHelp?: string,
         usage?: string,
-        ignoredInhibitors: Array<string>,
+        ignoredInhibitors?: Array<string>,
         category?: string
     }
     interface commandLoaderOptions {
