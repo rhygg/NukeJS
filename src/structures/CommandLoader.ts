@@ -24,7 +24,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-import { Collection, UserResolvable, MessageEmbed } from 'discord.js';
+import { Collection, UserResolvable, MessageEmbed, Message, TextChannel } from 'discord.js';
 import * as chalk from 'chalk';
 import { Client } from '../index';
 import Command from '../types/Command';
