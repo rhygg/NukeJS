@@ -53,6 +53,7 @@ export default class extends Loader {
 
   register(file: string, path: string) {
     const event: Event = new (require(path))(file);
+    if (!event.enabled) return;
     this.client.on(event.name, event.run);
     this.Logger.LOADED_EVENT(path.substring(process.cwd().length + 1));
   }

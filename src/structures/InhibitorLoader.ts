@@ -59,6 +59,7 @@ export default class extends Loader {
   register(file: string, path: string, category?: string) {
     try {
       const inhibitor: Inhibitor = new (require(path))(file);
+      if (!inhibitor.enabled) return;
       this.client.InhibitorStore.set(inhibitor.name, inhibitor);
       this.Logger.LOADED_INHIBITOR(path.substring(process.cwd().length + 1));
     } catch (error) {

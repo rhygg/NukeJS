@@ -26,73 +26,73 @@
  */
 
 declare module 'nukejs' {
-    import {
-      ClientOptions, Client as DiscordClient, UserResolvable, PermissionResolvable,
-    } from 'discord.js';
+  import {
+    ClientOptions, Client as DiscordClient, UserResolvable, PermissionResolvable,
+  } from 'discord.js';
 
-    interface NukeClientOptions {
-        discordOptions?: ClientOptions,
-        eventsFolder?: string,
-        readyMessage?: string,
-        owner?: string,
-        devIds?: Array<string>
-    }
+  interface NukeClientOptions {
+    discordOptions?: ClientOptions,
+    eventsFolder?: string,
+    readyMessage?: string,
+    owner?: string,
+    devIds?: Array<string>
+  }
 
-    interface CommandOptions {
-        enabled?: boolean,
-        runIn?: ("text"|"dm")[],
-        cooldown?: number,
-        aliases?: Array<string>,
-        botPerms?: Array<PermissionResolvable>,
-        userPerms?: Array<PermissionResolvable>,
-        name: string,
-        description?: string,
-        extendedHelp?: string,
-        usage?: string,
-        ignoredInhibitors?: Array<string>,
-        category?: string
-    }
-    interface commandLoaderOptions {
-        directory: string,
-        prefix: string,
-        allowMention?: boolean,
-        extensions?: Array<string>,
-        folderCategory?: boolean,
-        logCommands?: boolean,
-        handleEditing?: boolean,
-        blockBot?: boolean,
-        blockClient?: boolean,
-        ignoreCooldown?: Array<UserResolvable>,
-        ignorePerms?: Array<UserResolvable>,
-        ignoredInhibitors?: Array<string>,
-    }
+  interface CommandOptions {
+    enabled?: boolean,
+    runIn?: ('text' | 'dm')[],
+    cooldown?: number,
+    aliases?: Array<string>,
+    botPerms?: Array<PermissionResolvable>,
+    userPerms?: Array<PermissionResolvable>,
+    name: string,
+    description?: string,
+    extendedHelp?: string,
+    usage?: string,
+    ignoredInhibitors?: Array<string>,
+    category?: string
+  }
+  interface commandLoaderOptions {
+    directory: string,
+    prefix: string,
+    allowMention?: boolean,
+    extensions?: Array<string>,
+    folderCategory?: boolean,
+    logCommands?: boolean,
+    handleEditing?: boolean,
+    blockBot?: boolean,
+    blockClient?: boolean,
+    ignoreCooldown?: Array<UserResolvable>,
+    ignorePerms?: Array<UserResolvable>,
+    ignoredInhibitors?: Array<string>,
+  }
 
-    interface EventLoaderOptions {
-        directory: string,
-        extensions?: Array<string>
-    }
-    interface EventOptions {
-        name: string,
-        enabled?: boolean
-    }
+  interface EventLoaderOptions {
+    directory: string,
+    extensions?: Array<string>
+  }
+  interface EventOptions {
+    name: string,
+    enabled?: boolean
+  }
 
-    export class Client extends DiscordClient {
-      constructor(options?: NukeClientOptions)
-    }
+  export class Client extends DiscordClient {
+    constructor(options?: NukeClientOptions)
+  }
 
-    export class Command {
-      constructor(file?: string, options?: CommandOptions)
-    }
+  export class Command {
+    constructor(file?: string, options?: CommandOptions)
+  }
 
-    export class Event {
-      constructor(options: EventOptions)
-    }
+  export class Event {
+    constructor(options: EventOptions)
+  }
 
-    export class CommandLoader {
-      constructor(client: Client, options: commandLoaderOptions)
-    }
-    export class EventLoader {
-      constructor(client: Client, options: EventLoaderOptions)
-    }
+  export class CommandLoader {
+    constructor(client: Client, options: commandLoaderOptions)
+  }
+  export class EventLoader {
+    constructor(client: Client, options: EventLoaderOptions)
+  }
 
 }

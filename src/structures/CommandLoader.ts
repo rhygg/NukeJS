@@ -24,7 +24,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-import { Collection, UserResolvable, MessageEmbed, Message, TextChannel } from 'discord.js';
+import { Collection, UserResolvable, MessageEmbed } from 'discord.js';
 import * as chalk from 'chalk';
 import { Client } from '../index';
 import Command from '../types/Command';
@@ -132,6 +132,7 @@ export default class extends Loader {
     try {
       const command: Command = new (require(path))(file);
       if (this.folderCategory && category !== undefined) command.category = category;
+      if (!command.enabled) return;
       this.Commands.set(command.name, command);
       this.Logger.LOADED_COMMAND(command);
       this.emit('loaded', { path: command.file });
