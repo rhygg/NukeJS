@@ -1,6 +1,6 @@
 {
   "name": "nukejs",
-  "version": "2.3.10",
+  "version": "2.3.11",
   "description": "A simple Discord Bot Framework that adds very useful features",
   "main": "./dist/index",
   "author": "LostNuke",
