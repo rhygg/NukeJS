@@ -27,7 +27,7 @@
 
 declare module 'nukejs' {
   import {
-    Collection, ClientOptions, Client as DiscordClient, UserResolvable, PermissionResolvable,
+    Collection, ClientOptions, Client as DiscordClient, UserResolvable, PermissionResolvable, PermissionString, BitFieldResolvable,
   } from 'discord.js';
 
   interface NukeClientOptions {
@@ -86,16 +86,50 @@ declare module 'nukejs' {
   }
 
   export class Command {
+    enabled: boolean;
+
+    runIn: string[];
+
+    cooldown: number;
+
+    onCooldown: string[];
+
+    aliases: string[];
+
+    botPerms: Array<BitFieldResolvable<PermissionString>>;
+
+    userPerms: Array<BitFieldResolvable<PermissionString>>;
+
+    name: string;
+
+    description: string;
+
+    extendedHelp: string;
+
+    usage: string;
+
+    category: string;
+
+    file: string;
+
     constructor(file?: string, options?: CommandOptions)
 
     run(message, args, client);
   }
 
   export class Event {
+    name: string;
+
+    enabled: boolean;
+
     constructor(options: EventOptions)
   }
 
   export class Inhibitor {
+    name: string;
+
+    enabled: boolean;
+
     constructor(options: InhibitorOptions)
 
     run(message: string, command: Command, loaderName: string);
@@ -118,11 +152,11 @@ declare module 'nukejs' {
 
     handleEditing: boolean;
 
-   blockBot: boolean;
+    blockBot: boolean;
 
-   blockClient: boolean;
+    blockClient: boolean;
 
-   ignoreCooldown: Array<UserResolvable>;
+    ignoreCooldown: Array<UserResolvable>;
 
     ignorePerms: Array<UserResolvable>;
 
