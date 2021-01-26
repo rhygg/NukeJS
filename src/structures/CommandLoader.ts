@@ -25,7 +25,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 import { Collection, UserResolvable, MessageEmbed } from 'discord.js';
-import * as chalk from 'chalk';
+import { default as colors } from '../utils/NukeColors';
 import { Client } from '../index';
 import Command from '../types/Command';
 import NukeLogger from '../utils/NukeLogger';
@@ -106,11 +106,11 @@ export default class extends Loader {
   }
 
   init() {
-    console.log(chalk.gray('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'));
-    console.log(chalk.gray(`#         Loading commands with prefix: ${this.prefix}           #`));
-    console.log(chalk.gray('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'));
+    console.log(colors.getGray('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'));
+    console.log(colors.getGray(`#         Loading commands with prefix: ${this.prefix}           `));
+    console.log(colors.getGray('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'));
     this.fetchAll();
-    console.log(chalk.gray('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n'));
+    console.log(colors.getGray('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n'));
 
     this.client.on('ready', () => {
       this.client.on('message', async (message) => {

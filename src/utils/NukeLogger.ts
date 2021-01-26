@@ -23,31 +23,32 @@
  * DEALINGS IN THE SOFTWARE.
  */
 import * as chalk from 'chalk';
+import { default as colors } from './NukeColors';
 
-const messagePrefix = `${chalk.gray('[')}${chalk.magentaBright('NukeJS Bot Client')}${chalk.gray(']')}`;
+const messagePrefix = `${colors.getGray('[')}${colors.getMagenta('NukeJS Bot Client')}${colors.getGray(']')}`;
 
 export default class {
   MALFORMED_COMMAND(path) {
-    console.log(`${messagePrefix} ${chalk.redBright(`Malformed command at ${chalk.blueBright(path)}`)}`);
+    console.log(`${messagePrefix} ${colors.getRed(`Malformed command at ${colors.getBlue(path)}`)}`);
   }
 
   LOADED_COMMAND(command) {
-    console.log(`${messagePrefix} Loaded command ${chalk.greenBright(command.name)}`);
+    console.log(`${messagePrefix} Loaded command ${colors.getGreen(command.name)}`);
   }
 
   REMOVED_COMMAND(command) {
-    console.log(`${messagePrefix} ${chalk.redBright(`Removed Command ${chalk.blueBright(command)}`)}`);
+    console.log(`${messagePrefix} ${colors.getRed(`Removed Command ${colors.getBlue(command)}`)}`);
   }
 
   LOG_COMMAND(commandName, userName, guildName) {
-    console.log(`${messagePrefix} Command ${chalk.blueBright(commandName)} has been run by ${userName} in ${guildName}`);
+    console.log(`${messagePrefix} Command ${colors.getBlue(commandName)} has been run by ${userName} in ${guildName}`);
   }
 
   LOADED_EVENT(eventFile) {
-    console.log(`${messagePrefix} Loaded Event ${chalk.greenBright(eventFile)}`);
+    console.log(`${messagePrefix} Loaded Event ${colors.getGreen(eventFile)}`);
   }
 
   LOADED_INHIBITOR(inhibitor) {
-    console.log(`${messagePrefix} Loaded Inhibitor ${chalk.greenBright(inhibitor)}`);
+    console.log(`${messagePrefix} Loaded Inhibitor ${colors.getGreen(inhibitor)}`);
   }
 }

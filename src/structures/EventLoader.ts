@@ -25,7 +25,7 @@
  */
 /* eslint-disable import/no-dynamic-require */
 /* eslint-disable global-require */
-import * as chalk from 'chalk';
+import { default as colors } from '../utils/NukeColors';
 import Event from '../types/event';
 import NukeLogger from '../utils/NukeLogger';
 import Loader from './Loader';
@@ -44,11 +44,11 @@ export default class extends Loader {
   }
 
   init() {
-    console.log(chalk.gray('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'));
-    console.log(chalk.gray('#                           Events                               #'));
-    console.log(chalk.gray('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'));
+    console.log(colors.getGray('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'));
+    console.log(colors.getGray('#                           Events                               '));
+    console.log(colors.getGray('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'));
     this.fetchAll();
-    console.log(chalk.gray('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n'));
+    console.log(colors.getGray('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n'));
   }
 
   register(file: string, path: string) {

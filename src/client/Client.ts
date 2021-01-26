@@ -24,10 +24,10 @@
  */
 
 import * as discord from 'discord.js';
-import * as chalk from 'chalk';
+import { default as colors } from '../utils/NukeColors';
 import Inhibitor from '../types/Inhibitor';
 
-const messagePrefix = `${chalk.gray('[')}${chalk.magentaBright('NukeJS Bot Client')}${chalk.gray(']')}`;
+const messagePrefix = `${colors.getGray('[')}${colors.getMagenta('NukeJS Bot Client')}${colors.getGray(']')}`;
 
 interface NukeClientOptions {
   discordOptions?: discord.ClientOptions,
@@ -69,17 +69,17 @@ export default class extends discord.Client {
 
     this.on('ready', () => {
       let msg = `${messagePrefix} ${this.readyMessage}`;
-      msg = msg.split('{username}').join(chalk.greenBright(this.user.username));
-      msg = msg.split('{usertag}').join(chalk.greenBright(this.user.tag));
-      msg = msg.split('{userid}').join(chalk.greenBright(this.user.id));
-      msg = msg.split('{guildcount}').join(chalk.greenBright(this.guilds.cache.size));
+      msg = msg.split('{username}').join(colors.getGreen(this.user.username));
+      msg = msg.split('{usertag}').join(colors.getGreen(this.user.tag));
+      msg = msg.split('{userid}').join(colors.getGreen(this.user.id));
+      msg = msg.split('{guildcount}').join(colors.getGreen(this.guilds.cache.size));
 
       if (msg.includes('{guilds}')) {
         const guilds = [];
         this.guilds.cache.each((guild) => {
           guilds.push(guild.name);
         });
-        msg = msg.split('{guilds}').join(chalk.greenBright(guilds.join(chalk.redBright(','))));
+        msg = msg.split('{guilds}').join(colors.getGreen(guilds.join(colors.getRed(','))));
       }
       console.log(msg);
     });

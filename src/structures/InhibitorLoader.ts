@@ -25,7 +25,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-import * as chalk from 'chalk';
+import { default as colors } from '../utils/NukeColors';
 import { Client } from '../index';
 import Inhibitor from '../types/Inhibitor';
 import Loader from './Loader';
@@ -48,11 +48,11 @@ export default class extends Loader {
   }
 
   init() {
-    console.log(chalk.gray('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'));
-    console.log(chalk.gray('#                          Inhibitor                             #'));
-    console.log(chalk.gray('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'));
+    console.log(colors.getGray('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'));
+    console.log(colors.getGray('#                          Inhibitor                             #'));
+    console.log(colors.getGray('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'));
     this.fetchAll();
-    console.log(chalk.gray('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n'));
+    console.log(colors.getGray('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n'));
   }
 
   // eslint-disable-next-line no-unused-vars

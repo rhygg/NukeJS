@@ -44,7 +44,7 @@
   "homepage": "https://nukejs.xyz/#/",
   "types": "typings/index.d.ts",
   "dependencies": {
-    "chalk": "^4.1.0",
+    "discord.js": "^12.5.1",
     "fs": "0.0.1-security"
   }
 }
