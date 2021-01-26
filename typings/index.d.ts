@@ -27,7 +27,7 @@
 
 declare module 'nukejs' {
   import {
-    ClientOptions, Client as DiscordClient, UserResolvable, PermissionResolvable,
+    Collection, ClientOptions, Client as DiscordClient, UserResolvable, PermissionResolvable,
   } from 'discord.js';
 
   interface NukeClientOptions {
@@ -67,6 +67,11 @@ declare module 'nukejs' {
     ignoredInhibitors?: Array<string>,
   }
 
+  interface InhibitorOptions {
+    name: string,
+    enabled?: boolean
+  }
+
   interface EventLoaderOptions {
     directory: string,
     extensions?: Array<string>
@@ -82,13 +87,51 @@ declare module 'nukejs' {
 
   export class Command {
     constructor(file?: string, options?: CommandOptions)
+
+    run(message, args, client);
   }
 
   export class Event {
     constructor(options: EventOptions)
   }
 
+  export class Inhibitor {
+    constructor(options: InhibitorOptions)
+
+    run(message: string, command: Command, loaderName: string);
+  }
+
   export class CommandLoader {
+    directory: string;
+
+    prefix: string;
+
+    name: string;
+
+    allowMention: boolean;
+
+    extensions: Array<string>;
+
+    folderCategory: boolean;
+
+    logCommands: boolean;
+
+    handleEditing: boolean;
+
+   blockBot: boolean;
+
+   blockClient: boolean;
+
+   ignoreCooldown: Array<UserResolvable>;
+
+    ignorePerms: Array<UserResolvable>;
+
+    ignoredInhibitors: Array<string>;
+
+    client: Client;
+
+    Commands: Collection<string, Command>;
+
     constructor(client: Client, options: commandLoaderOptions)
   }
   export class EventLoader {
