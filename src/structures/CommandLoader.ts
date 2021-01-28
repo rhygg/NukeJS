@@ -205,35 +205,24 @@ export default class extends Loader {
       return;
     }
 
-
-    if (message.channel.type !== 'dm') {
-      if (cmd.botPerms.length !== 0) {
-        if (!message.guild.member(message.client.user).hasPermission(cmd.botPerms)) {
-          message.reply(`Please make sure I have following perms! ${cmd.botPerms.join(', ')}`);
-          return;
-        }
-      }
-      if (cmd.userPerms.length !== 0 && !this.ignorePerms.includes(message.author.id)) {
-        if (!message.member.hasPermission(cmd.userPerms)) {
-          message.reply(`You need following perms to use this command! ${cmd.userPerms.join(', ')}`);
-          return;
-        }
-      }
-    }
     try {
+      if (message.channel.type !== 'dm') {
+        if (cmd.botPerms.length !== 0) {
+          if (!message.guild.member(message.client.user).hasPermission(cmd.botPerms)) {
+            message.reply(`Please make sure I have following perms! ${cmd.botPerms.join(', ')}`);
+            return;
+          }
+        }
+        if (cmd.userPerms.length !== 0 && !this.ignorePerms.includes(message.author.id)) {
+          if (!message.member.hasPermission(cmd.userPerms)) {
+            message.reply(`You need following perms to use this command! ${cmd.userPerms.join(', ')}`);
+            return;
+          }
+        }
+      }
+
       await cmd.run(message, args, message.client);
       this.emit('executed', { command: cmd.name });
-    } catch (error) {
-      console.error(error);
-      const errorEmbed = new MessageEmbed()
-        .setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true }))
-        .setTitle('An Error has occurred!')
-        .setDescription(`Command failed to with error:\n\n${error.message}`)
-        .setColor('#ee110f');
-      message.channel.send(errorEmbed);
-
-      this.emit('error', { command: cmd.name, error });
-    } finally {
       if (this.logCommands) this.Logger.LOG_COMMAND(cmd.name, message.user.username, message.guild.name);
       if (cmd.cooldown > 0) {
         cmd.onCooldown.push(message.author.id);
@@ -244,8 +233,16 @@ export default class extends Loader {
           }
         }, cmd.cooldown);
       }
+    } catch (error) {
+      console.error(error);
+      const errorEmbed = new MessageEmbed()
+        .setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true }))
+        .setTitle('An Error has occurred!')
+        .setDescription(`Command failed to with error:\n\n${error.message}`)
+        .setColor('#ee110f');
+      message.channel.send(errorEmbed);
+
+      this.emit('cmd_error', { command: cmd.name, error });
     }
-
-
   }
 }
