@@ -205,34 +205,24 @@ export default class extends Loader {
       return;
     }
 
-    try {
-      if (message.channel.type !== 'dm') {
-        if (cmd.botPerms.length !== 0) {
-          if (!message.guild.member(message.client.user).hasPermission(cmd.botPerms)) {
-            message.reply(`Please make sure I have following perms! ${cmd.botPerms.join(', ')}`);
-            return;
-          }
-        }
-        if (cmd.userPerms.length !== 0 && !this.ignorePerms.includes(message.author.id)) {
-          if (!message.member.hasPermission(cmd.userPerms)) {
-            message.reply(`You need following perms to use this command! ${cmd.userPerms.join(', ')}`);
-            return;
-          }
+
+    if (message.channel.type !== 'dm') {
+      if (cmd.botPerms.length !== 0) {
+        if (!message.guild.member(message.client.user).hasPermission(cmd.botPerms)) {
+          message.reply(`Please make sure I have following perms! ${cmd.botPerms.join(', ')}`);
+          return;
         }
       }
-
+      if (cmd.userPerms.length !== 0 && !this.ignorePerms.includes(message.author.id)) {
+        if (!message.member.hasPermission(cmd.userPerms)) {
+          message.reply(`You need following perms to use this command! ${cmd.userPerms.join(', ')}`);
+          return;
+        }
+      }
+    }
+    try {
       await cmd.run(message, args, message.client);
       this.emit('executed', { command: cmd.name });
-      if (this.logCommands) this.Logger.LOG_COMMAND(cmd.name, message.user.username, message.guild.name);
-      if (cmd.cooldown > 0) {
-        cmd.onCooldown.push(message.author.id);
-        setTimeout(() => {
-          const index = cmd.onCooldown.indexOf(message.author.id);
-          if (index > -1) {
-            cmd.onCooldown.splice(index, 1);
-          }
-        }, cmd.cooldown);
-      }
     } catch (error) {
       console.error(error);
       const errorEmbed = new MessageEmbed()
@@ -243,6 +233,19 @@ export default class extends Loader {
       message.channel.send(errorEmbed);
 
       this.emit('error', { command: cmd.name, error });
+    } finally {
+      if (this.logCommands) this.Logger.LOG_COMMAND(cmd.name, message.user.username, message.guild.name);
+      if (cmd.cooldown > 0) {
+        cmd.onCooldown.push(message.author.id);
+        setTimeout(() => {
+          const index = cmd.onCooldown.indexOf(message.author.id);
+          if (index > -1) {
+            cmd.onCooldown.splice(index, 1);
+          }
+        }, cmd.cooldown);
+      }
     }
+
+
   }
 }

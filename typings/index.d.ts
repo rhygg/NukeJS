@@ -65,6 +65,7 @@ declare module 'nukejs' {
     ignoreCooldown?: Array<UserResolvable>,
     ignorePerms?: Array<UserResolvable>,
     ignoredInhibitors?: Array<string>,
+    errorOutput?: boolean;
   }
 
   interface InhibitorOptions {
@@ -165,6 +166,8 @@ declare module 'nukejs' {
     client: Client;
 
     Commands: Collection<string, Command>;
+
+    errorOutput: boolean;
 
     constructor(client: Client, options: commandLoaderOptions)
   }
