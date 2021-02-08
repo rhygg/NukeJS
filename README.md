@@ -6,6 +6,9 @@
 </div>
 
 **NOTICE! License changed since version 2.3.4! If you want the GPL version you can find it on Github in the GPL-3 branch!**
+
+## Changelog
+Added Guild Specific prefixes, check the CommandsLoader section of the docs!
 # About
 What is NukeJS I hear? Its a Framework built for discord.js which allows adds in some extra features.
 
