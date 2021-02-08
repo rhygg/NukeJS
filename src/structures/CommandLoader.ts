@@ -24,7 +24,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-import { Collection, UserResolvable, MessageEmbed } from 'discord.js';
+import { Collection, UserResolvable, MessageEmbed, Message } from 'discord.js';
 import { default as colors } from '../utils/NukeColors';
 import { Client } from '../index';
 import Command from '../types/Command';
@@ -33,7 +33,8 @@ import Loader from './Loader';
 
 interface commandLoaderOptions {
   directory: string,
-  prefix: string,
+  prefix: string | ((message: Message) => string | Promise<string>),
+  db?: any,
   name?: string,
   allowMention?: boolean,
   extensions?: Array<string>,
@@ -51,7 +52,7 @@ interface commandLoaderOptions {
 export default class extends Loader {
   directory: string;
 
-  prefix: string;
+  prefix: string | ((message: Message) => string | Promise<string>);
 
   name: string;
 
@@ -172,8 +173,10 @@ export default class extends Loader {
 
   async handle(message) {
     let args;
-    if (message.content.startsWith(this.prefix)) {
-      args = message.content.substring(this.prefix.length).split(/ +/);
+    let temp_prefix = this.prefix;
+    if (typeof temp_prefix === "function") temp_prefix = await temp_prefix(message);
+    if (message.content.startsWith(temp_prefix)) {
+      args = message.content.substring(temp_prefix.length).split(/ +/);
     } else if (this.allowMention && message.content.startsWith(`<@${this.client.user.id}>`)) {
       args = message.content.substring(`<@${this.client.user.id}>`.length).split(/ +/);
     } else if (this.allowMention && message.content.startsWith(`<@!${this.client.user.id}>`)) {

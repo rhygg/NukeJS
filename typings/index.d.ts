@@ -27,7 +27,7 @@
 
 declare module 'nukejs' {
   import {
-    Collection, ClientOptions, Client as DiscordClient, UserResolvable, PermissionResolvable, PermissionString, BitFieldResolvable,
+    Collection, ClientOptions, Client as DiscordClient, UserResolvable, PermissionResolvable, PermissionString, BitFieldResolvable, Message,
   } from 'discord.js';
 
   interface NukeClientOptions {
@@ -54,7 +54,7 @@ declare module 'nukejs' {
   }
   interface commandLoaderOptions {
     directory: string,
-    prefix: string,
+    prefix: string | ((message: Message) => string | Promise<string>),
     allowMention?: boolean,
     extensions?: Array<string>,
     folderCategory?: boolean,
