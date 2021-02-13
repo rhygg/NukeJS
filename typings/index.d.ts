@@ -51,6 +51,7 @@ declare module 'nukejs' {
     usage?: string,
     ignoredInhibitors?: Array<string>,
     category?: string
+    restricted?: "admin" | "dev";
   }
   interface commandLoaderOptions {
     directory: string,
@@ -111,6 +112,8 @@ declare module 'nukejs' {
 
     category: string;
 
+    restricted: string;
+
     file: string;
 
     constructor(file?: string, options?: CommandOptions)
@@ -170,6 +173,17 @@ declare module 'nukejs' {
     errorOutput: boolean;
 
     constructor(client: Client, options: commandLoaderOptions)
+
+    /**
+     * Reload all Commands
+     */
+    reload(): void;
+
+    /**
+     * Remove a specific command from the loader
+     * @param command string
+     */
+    remove(command: string): void;
   }
   export class EventLoader {
     constructor(client: Client, options: EventLoaderOptions)

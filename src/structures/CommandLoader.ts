@@ -155,6 +155,15 @@ export default class extends Loader {
     }
   }
 
+  reload() {
+    this.Commands.clear()
+    console.log(colors.getGray('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'));
+    console.log(colors.getGray(`#         Reloading commands with prefix: ${this.prefix}           `));
+    console.log(colors.getGray('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'));
+    this.fetchAll();
+    console.log(colors.getGray('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n'));
+  }
+
   async checkInihibitors(message, cmd) {
     // eslint-disable-next-line no-unused-vars
     return new Promise((resolve, reject) => {
@@ -202,6 +211,7 @@ export default class extends Loader {
       }
     }
 
+    if ((cmd.restricted === "owner" && message.author.id !== this.client.owner) || (cmd.restricted === "dev" && !this.client.devIds.includes(message.author.id))) return;
     if (!cmd.runIn.includes(message.channel.type)) return;
     if (cmd.cooldown > 0 && cmd.onCooldown.includes(message.author.id)) {
       message.reply(`You need to wait ${cmd.cooldown / 1000} seconds before using this command again!`);

@@ -32,6 +32,7 @@ blockClient | boolean | If the Client should be blocked from running commands | 
 ignoreCooldown | Array<string> | An array with IDs of users who can bypass the Cooldown | [OwnerID]
 ignorePerms | Array<string> | An array with IDs of users that can bypass the perm checks | []
 ignoredInhibitors | Array<string> | Array of Inhibitors (by name) that are ignored by this Loader | []
+restricted | "owner"/"dev" | Restrict your command to either owner or devs | none
 errorOutput | boolean | Whether or not it should send an error embed when you throw a new Error | true
 
 ## Guild Specific Prefixes
@@ -44,6 +45,10 @@ import Guild from "./database/models/GuildConfig"
 
 let commandLoader = new CommandLoader(client, { directory: "./dist/commands" ,prefix: async (message) => {return (await  mongoose.model("GuildConfig").findOne({id: message.guild.id}).exec()).get("prefix")} });
 ```
+
+## Reloading commands
+
+Every CommandLoader has a reload() function, this function clears the CommandLoader and reloads all commands. To use this, you need to define CommandLoader as a global variable and run that function in your self made reload command
 
 ## Events
 

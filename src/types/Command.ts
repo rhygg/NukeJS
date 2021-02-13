@@ -40,6 +40,7 @@ interface CommandOptions {
   extendedHelp?: string,
   usage?: string,
   category?: string,
+  restricted?: "owner" | "dev";
 }
 export default class {
   public enabled: boolean;
@@ -68,6 +69,8 @@ export default class {
 
   public file: string;
 
+  public restricted: string;
+
   constructor(file: string, options: CommandOptions) {
     this.enabled = options.enabled;
     if (this.enabled === undefined) this.enabled = true;
@@ -92,6 +95,8 @@ export default class {
     this.extendedHelp = options.extendedHelp || this.description;
 
     this.usage = options.usage || '';
+
+    this.restricted = options.restricted;
 
     this.file = file;
   }
