@@ -215,7 +215,7 @@ export default class extends Loader {
     if (!cmd.runIn.includes(message.channel.type)) return;
     if (cmd.cooldown > 0 && cmd.onCooldown.includes(message.author.id)) {
       message.reply(`You need to wait ${cmd.cooldown / 1000} seconds before using this command again!`);
-      return;
+      return;     
     }
 
     try {
