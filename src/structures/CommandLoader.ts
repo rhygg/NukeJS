@@ -108,7 +108,8 @@ export default class extends Loader {
 
   init() {
     console.log(colors.getGray('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'));
-    console.log(colors.getGray(`#         Loading commands with prefix: ${this.prefix}           `));
+    if(typeof this.prefix == "function") console.log(colors.getGray(`#         Loading commands with Guild Specific Prefix          `));
+     else console.log(colors.getGray(`#         Loading commands with prefix: ${this.prefix}           `));
     console.log(colors.getGray('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'));
     this.fetchAll();
     console.log(colors.getGray('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n'));
@@ -158,7 +159,8 @@ export default class extends Loader {
   reload() {
     this.Commands.clear()
     console.log(colors.getGray('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'));
-    console.log(colors.getGray(`#         Reloading commands with prefix: ${this.prefix}           `));
+    if(typeof this.prefix == "function") console.log(colors.getGray(`#         Reloading commands with Guild Specific Prefix          `));
+     else console.log(colors.getGray(`#         ´Reloading commands with prefix: ${this.prefix}           `));
     console.log(colors.getGray('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'));
     this.fetchAll();
     console.log(colors.getGray('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n'));
